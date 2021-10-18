@@ -36,7 +36,7 @@ int findMin(const char *string, int MIN ){
 
 int main(int argc, char* argv[]) {
     int LEVEL, PARAM;
-    int stats = -1;
+    char *stats;
     if (argc > 1) {
         LEVEL = (int) argv[1];
     }
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
         PARAM = (int) argv[2];
     }
     if (argc > 3) {
-        stats = (int)argv[3];
+        char *stats = argv[3];
     }
 
     char password[120][100];
@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    int AVG, MIN = 100, NCHAR = 0;
+    int AVG = 0, MIN = 100, NCHAR = 0;
     int nstrings = 0, sumoflengths = 0;
 
     for (int i = 0; i < 1000; ++i)
@@ -67,9 +67,12 @@ int main(int argc, char* argv[]) {
             sumoflengths += strLength(password[i]);
 
             MIN = findMin(password[i], MIN);
+
+            if (stats != NULL){
+                printf("Statistika:\n Ruznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %d", NCHAR, MIN, sumoflengths / nstrings);
+            }
         }
     }
 
-    AVG = sumoflengths / nstrings;
     return 0;
 }
