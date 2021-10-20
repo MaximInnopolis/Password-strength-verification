@@ -35,6 +35,25 @@ int isNum(char sym) {
     return false;
 }
 
+int my_strcmp(char *strg1, char *strg2)
+{
+    while( ( *strg1 != '\0' && *strg2 != '\0' ) && (*strg1 == *strg2))
+    {
+        strg1++;
+        strg2++;
+    }
+
+    if(*strg1 == *strg2)
+    {
+        return 0; // strings are identical
+    }
+
+    else
+    {
+        return *strg1 - *strg2;
+    }
+}
+
 bool isFirstLevel(const char *string) {
     bool upper = 0;
     bool lower = 0;
@@ -100,7 +119,34 @@ bool isThirdLevel(const char *string, int PARAM) {
 }
 
 bool isFourthLevel(const char *string, int PARAM) {
-    ;
+
+    int locallength = strLength(string) - PARAM;
+    char substringfirst[2];
+    char substringsecound[2];
+
+    if (isThirdLevel(string, PARAM)) {
+        for (int i = 0 ; i < strLength(string); ++i){
+            locallength--;
+            if (locallength <= 0) {
+                break;
+            }
+            else {
+                for (int j = i, z = 0; z < PARAM; ++j, z++) {
+                    substringfirst[j - i] = string[j];
+                }
+                for (int z = 0, j = PARAM + i; z < PARAM; ++j, z++){
+                    substringsecound[j - PARAM - i] = string[j];
+                }
+                printf("substringfirst : %s at i = %d\n",substringfirst,i);
+                printf("substringsecound : %s at i = %d\n",substringsecound,i);
+
+                if (my_strcmp(substringfirst, substringsecound) == 0){
+                    return false;                }
+            }
+        }
+        return true;
+    }
+    return false;
 }
 
 int findMin(const char *string, int MIN ){
@@ -119,20 +165,16 @@ int main(int argc, char* argv[]) {
     if (argc > 2) {
         PARAM = (int) argv[2];
     }
-    if ((argc == 4 ) && (argv[3] == "--stats")) {
-        gets(stats);
-    }
-
-    else { printf("Too many arguments");}
-
-    char password[120][100];
-    for (int i = 0; i < 120; ++i) {
-        for (int j = 0; j < 100; ++j){
-            getc(NULL);
+    if ((argc == 4 ) && (my_strcmp(argv[3],"--stats"))) {
+        for (int i = 0; i < strLength(argv[3]); ++i) {
+            stats[i] = argv[3][i];
         }
     }
 
-    int AVG = 0, MIN = 100, NCHAR = 0;
+    else { printf("Invalid amount of arguments");}
+
+    char password[120][100];
+    int MIN = 100, NCHAR = 0;
     int nstrings = 0, sumoflengths = 0;
 
     for (int i = 0; i < 1000; ++i)
@@ -141,24 +183,30 @@ int main(int argc, char* argv[]) {
 
             switch (LEVEL) {
                 case (1):
-                    isFirstLevel(password[i]);
+                    if (isFirstLevel(password[i])) {
+                        printf("%s", password[i]);
+                    }
                 case (2):
-                    isSecondLevel(password[i], PARAM);
+                    if (isSecondLevel(password[i], PARAM)) {
+                        printf("%s", password[i]);
+                    }
                 case (3):
-                    isThirdLevel(password[i], PARAM);
+                    if (isThirdLevel(password[i], PARAM)) {
+                        printf("%s", password[i]);
+                    }
                 case (4):
-                    isFourthLevel(password[i], PARAM);
-
-                    nstrings++;
-                    sumoflengths += strLength(password[i]);
-
-                    MIN = findMin(password[i], MIN);
-
-                    if (stats == "--stats"){
-                        printf("Statistika:\n Ruznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %d", NCHAR, MIN, sumoflengths / nstrings);
+                    if (isFourthLevel(password[i], PARAM)) {
+                        printf("%s", password[i]);
                     }
             }
+            nstrings++;
+            sumoflengths += strLength(password[i]);
+            MIN = findMin(password[i], MIN);
         }
-
-        return 0;
     }
+    if (my_strcmp(stats, "--stats")) {
+        printf("Statistika:\n Ruznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %d", NCHAR, MIN, sumoflengths / nstrings);
+    }
+
+    return 0;
+}
