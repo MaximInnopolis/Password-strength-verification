@@ -1,6 +1,132 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+int findNumChar(char Password[120][100]){  //i=2 j=3
+    int unique = 0;
+    char a[2][3] = {"agc",
+                    "dta"};
+    for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            if (a[i][j] == 0) break;
+            bool isUnique = true;
+            bool ended = false;
+
+            for (int z = i; z < 2; ++z) {
+                bool isBrake = false;
+
+                if (j == 0){
+                    for (int y = j; y < 3; ++y) {
+                        if ((i == z) && (j == y)){
+                            isUnique = isUnique && (a[i][j] != a[z][y]);
+                            continue;
+                        }
+                        if(a[z][y] == 0){
+                            break;
+                        }
+                        if (a[i][j] == a[z][y]) {
+                            isUnique = isUnique && (a[i][j] != a[z][y]);
+                            printf("Found equal char %d %d, %d %d\n", i, j, z, y);
+                            isBrake = true;
+                            break;
+                        }
+                        if ((y == 2) && (z == 1)) {
+                            isUnique = true;
+                            isBrake = true;
+                        }
+                    }
+                    if (isBrake){
+                        break;
+                    }
+                }
+
+                if ((j != 2) && (j != 0) && (ended == true)){
+                    for (int y = 0; y < 3; ++y) {
+                        if ((i == z) && (j == y)){
+                            isUnique = isUnique && (a[i][j] != a[z][y]);
+                            continue;
+                        }
+                        if(a[z][y] == 0){
+                            break;
+                        }
+                        if (a[i][j] == a[z][y]) {
+                            isUnique = isUnique && (a[i][j] != a[z][y]);
+                            printf("Found equal char %d %d, %d %d\n", i, j, z, y);
+                            isBrake = true;
+                            break;
+                        }
+                        if ((y == 2) && (z == 1)) {
+                            isUnique = true;
+                            isBrake = true;
+                        }
+                    }
+                    ended = false;
+                    if (isBrake){
+                        break;
+                    }
+                }
+
+                if ((j != 2) && (j != 0)){
+                    for (int y = 2 - j; y < 3; ++y) {
+                        if ((i == z) && (j == y)){
+                            isUnique = isUnique && (a[i][j] != a[z][y]);
+                            continue;
+                        }
+                        if(a[z][y] == 0){
+                            break;
+                        }
+                        if (a[i][j] == a[z][y]) {
+                            isUnique = isUnique && (a[i][j] != a[z][y]);
+                            printf("Found equal char %d %d, %d %d\n", i, j, z, y);
+                            isBrake = true;
+                            break;
+                        }
+                        if ((y == 2) && (z == 1)) {
+                            isUnique = true;
+                            isBrake = true;
+                        }
+                    }
+                    ended = true;
+                    if (isBrake){
+                        break;
+                    }
+                }
+
+                if ((j == 2) && (i != 1) && (z == i)){
+                    continue;
+                }
+
+                if ((j == 2) && (i != 1) && (z != i)) {
+                    for (int y = 0; y < 3; ++y) {
+                        if ((i == z) && (j == y)){
+                            isUnique = isUnique && (a[i][j] != a[z][y]);
+                            continue;
+                        }
+                        if(a[z][y] == 0){
+                            break;
+                        }
+                        if (a[i][j] == a[z][y]) {
+                            isUnique = isUnique && (a[i][j] != a[z][y]);
+                            printf("Found equal char %d %d, %d %d\n", i, j, z, y);
+                            isBrake = true;
+                            break;
+                        }
+                        if ((y == 2) && (z == 1)) {
+                            isUnique = true;
+                            isBrake = true;
+                        }
+                    }
+                    if (isBrake){
+                        break;
+                    }
+                }
+            }
+            if (isUnique) ++unique;
+        }
+    }
+    printf("Number of unique chars %d\n",unique);
+    return unique;
+}
+
 bool isSpecialSym(const char sym) {
     if ((sym <= 47 && 33 >= sym) || (sym <= 64 && 58 >= sym) || (sym <= 96 && 91 >= sym) || (sym <= 123 && 126 >= sym)) {
         return true;
@@ -174,7 +300,7 @@ int main(int argc, char* argv[]) {
     else { printf("Invalid amount of arguments");}
 
     char password[120][100];
-    int MIN = 100, NCHAR = 0;
+    int MIN = 100;
     int nstrings = 0, sumoflengths = 0;
 
     for (int i = 0; i < 1000; ++i)
@@ -205,7 +331,7 @@ int main(int argc, char* argv[]) {
         }
     }
     if (my_strcmp(stats, "--stats")) {
-        printf("Statistika:\n Ruznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %d", NCHAR, MIN, sumoflengths / nstrings);
+        printf("Statistika:\n Ruznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %d", findNumChar(password), MIN, sumoflengths / nstrings);
     }
 
     return 0;
