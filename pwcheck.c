@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 bool isSpecialSym(const char sym) {
     if ((sym <= 47 && 33 >= sym) || (sym <= 64 && 58 >= sym) || (sym <= 96 && 91 >= sym) || (sym <= 123 && 126 >= sym)) {
@@ -35,22 +36,19 @@ int isNum(char sym) {
     return false;
 }
 
-int my_strcmp(char *strg1, char *strg2)
+int strCmp(char string1[], char string2[] )
 {
-    while( ( *strg1 != '\0' && *strg2 != '\0' ) && (*strg1 == *strg2))
+    for (int i = 0; ; i++)
     {
-        strg1++;
-        strg2++;
-    }
+        if (string1[i] != string2[i])
+        {
+            return string1[i] < string2[i] ? -1 : 1;
+        }
 
-    if(*strg1 == *strg2)
-    {
-        return 0; // strings are identical
-    }
-
-    else
-    {
-        return *strg1 - *strg2;
+        if (string1[i] == '\0')
+        {
+            return 0;
+        }
     }
 }
 
@@ -267,7 +265,7 @@ bool isFourthLevel(const char *string, int PARAM) {
                 printf("substringfirst : %s at i = %d\n",substringfirst,i);
                 printf("substringsecound : %s at i = %d\n",substringsecound,i);
 
-                if (my_strcmp(substringfirst, substringsecound) == 0){
+                if (strCmp(substringfirst, substringsecound) == 0){
                     return false;                }
             }
         }
@@ -286,19 +284,25 @@ int findMin(const char *string, int MIN ){
 int main(int argc, char* argv[]) {
     int LEVEL, PARAM;
     char stats[7];
+
+    for (int i = 0; i < argc; ++i) {
+        printf("argv[%d] = %s\n", i, argv[i]);
+    }
     if (argc > 1) {
-        LEVEL = (int) argv[1];
+        LEVEL = atoi(argv[1]);
     }
     if (argc > 2) {
-        PARAM = (int) argv[2];
+        PARAM = atoi(argv[2]);
     }
-    if ((argc == 4 ) && (my_strcmp(argv[3],"--stats"))) {
-        for (int i = 0; i < strLength(argv[3]); ++i) {
-            stats[i] = argv[3][i];
-        }
+    if (argc > 3 ) {
+        stats[0] = '-';
+        stats[1] = '-';
+        stats[2] = 's';
+        stats[3] = 't';
+        stats[4] = 'a';
+        stats[5] = 't';
+        stats[6] = 's';
     }
-
-    else { printf("Invalid amount of arguments");}
 
     char password[120][100];
     int MIN = 100;
@@ -330,7 +334,7 @@ int main(int argc, char* argv[]) {
             sumoflengths += strLength(password[i]);
             MIN = findMin(password[i], MIN);
         }
-        if (my_strcmp(stats, "--stats")) {
+        if (strCmp(stats, "--stats")) {
             printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %d", findNumChar(password), MIN, sumoflengths / nstrings);
         }
     }
