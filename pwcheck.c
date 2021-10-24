@@ -80,7 +80,7 @@ int findNumChar(char a[120][100]){
                             isBrake = true;
                             break;
                         }
-                        if ((y == strLength(a[y]) - 1) && (z == 120)) {
+                        if ((y == strLength(a[y]) - 1) && (z == 119)) {
                             isUnique = true;
                             isBrake = true;
                         }
@@ -105,7 +105,7 @@ int findNumChar(char a[120][100]){
                             isBrake = true;
                             break;
                         }
-                        if ((y == strLength(a[y]) - 1) && (z == 120)) {
+                        if ((y == strLength(a[y]) - 1) && (z == 119)) {
                             isUnique = true;
                             isBrake = true;
                         }
@@ -131,7 +131,7 @@ int findNumChar(char a[120][100]){
                             isBrake = true;
                             break;
                         }
-                        if ((y == strLength(a[y]) - 1) && (z == 120)) {
+                        if ((y == strLength(a[y]) - 1) && (z == 119)) {
                             isUnique = true;
                             isBrake = true;
                         }
@@ -161,7 +161,7 @@ int findNumChar(char a[120][100]){
                             isBrake = true;
                             break;
                         }
-                        if ((y == strLength(a[y]) - 1) && (z == 120)) {
+                        if ((y == strLength(a[y]) - 1) && (z == 119)) {
                             isUnique = true;
                             isBrake = true;
                         }
@@ -311,29 +311,28 @@ int main(int argc, char* argv[]) {
             switch (LEVEL) {
                 case (1):
                     if (isFirstLevel(password[i])) {
-                        printf("%s", password[i]);
+                        printf("%s\n", password[i]);
                     }
                 case (2):
                     if (isSecondLevel(password[i], PARAM)) {
-                        printf("%s", password[i]);
+                        printf("%s\n", password[i]);
                     }
                 case (3):
                     if (isThirdLevel(password[i], PARAM)) {
-                        printf("%s", password[i]);
+                        printf("%s\n", password[i]);
                     }
                 case (4):
                     if (isFourthLevel(password[i], PARAM)) {
-                        printf("%s", password[i]);
+                        printf("%s\n", password[i]);
                     }
             }
             nstrings++;
             sumoflengths += strLength(password[i]);
             MIN = findMin(password[i], MIN);
         }
+        if (my_strcmp(stats, "--stats")) {
+            printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %d", findNumChar(password), MIN, sumoflengths / nstrings);
+        }
     }
-    if (my_strcmp(stats, "--stats")) {
-        printf("Statistika:\n Ruznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %d", findNumChar(password), MIN, sumoflengths / nstrings);
-    }
-
     return 0;
 }
