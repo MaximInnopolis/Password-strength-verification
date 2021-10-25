@@ -335,6 +335,5 @@ int main(int argc, char* argv[]) {
     if (strCmp(stats, "--stats")) {
         printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %d", findNumChar(password), MIN, sumoflengths / nstrings);
     }
-    printf("%s", stats);
     return 0;
 }
