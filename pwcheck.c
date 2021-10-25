@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 bool isSpecialSym(const char sym) {
-    if ((sym <= 47 && 33 >= sym) || (sym <= 64 && 58 >= sym) || (sym <= 96 && 91 >= sym) || (sym <= 123 && 126 >= sym)) {
+    if ((sym <= 47 && sym >= 33) || (sym <= 64 && sym >= 58) || (sym <= 96 && sym >= 91) || (sym <= 126 && sym >= 123)) {
         return true;
     }
     return false;
@@ -26,7 +26,7 @@ bool isLower(const char sym) {
 int strLength(const char *string) { // count number of element which is not full
     int i = 0;
     while (string[i] != 0) i++;
-    return i;
+    return i - 1;               // with count of '\n' symbol
 }
 
 int isNum(char sym) {
@@ -199,16 +199,11 @@ bool isFirstLevel(const char *string) {
 }
 
 bool isSecondLevel(const char *string, int PARAM) {
-    bool upper = 0;
-    bool lower = 0;
-    bool num = 0;
-    bool spec = 0;
+    bool upper = false, lower = false, num = false, spec = false;
 
     if (isFirstLevel(string)) {
         for (int i = 0 ; i < strLength(string); ++i) {
-            if (PARAM == (int)upper + (int)lower + (int)num + (int)spec) {
-                return true;
-            }
+
             if (isUpper(string[i])) {
                 upper += 1;
             }
@@ -222,6 +217,9 @@ bool isSecondLevel(const char *string, int PARAM) {
             if (isSpecialSym(string[i])) {
                 spec += 1;
             }
+            if (PARAM <= (int)upper + (int)lower + (int)num + (int)spec) {
+                return true;
+            }
         }
     }
     return false;
@@ -234,7 +232,7 @@ bool isThirdLevel(const char *string, int PARAM) {
             if (PARAM == seqlength) {
                 return false;
             }
-            if (string[i] == string [i+1]){
+            if (string[i] == string [i + 1]){
                 seqlength++;
             }
         }
@@ -246,8 +244,8 @@ bool isThirdLevel(const char *string, int PARAM) {
 bool isFourthLevel(const char *string, int PARAM) {
 
     int locallength = strLength(string) - PARAM;
-    char substringfirst[2];
-    char substringsecound[2];
+    char substringfirst[PARAM + 1];
+    char substringsecound[PARAM + 1];
 
     if (isThirdLevel(string, PARAM)) {
         for (int i = 0 ; i < strLength(string); ++i){
@@ -262,8 +260,8 @@ bool isFourthLevel(const char *string, int PARAM) {
                 for (int z = 0, j = PARAM + i; z < PARAM; ++j, z++){
                     substringsecound[j - PARAM - i] = string[j];
                 }
-                printf("substringfirst : %s at i = %d\n",substringfirst,i);
-                printf("substringsecound : %s at i = %d\n",substringsecound,i);
+//                printf("substringfirst : %s at i = %d\n",substringfirst,i);
+//                printf("substringsecound : %s at i = %d\n",substringsecound,i);
 
                 if (strCmp(substringfirst, substringsecound) == 0){
                     return false;                }
@@ -308,35 +306,35 @@ int main(int argc, char* argv[]) {
     int MIN = 100;
     int nstrings = 0, sumoflengths = 0;
 
-    for (int i = 0; i < 1000; ++i)
-    {
-        while ((int) fgets(password[i], 100, stdin) != EOF) {
-
-            switch (LEVEL) {
-                case (1):
-                    if (isFirstLevel(password[i])) {
-                        printf("%s\n", password[i]);
-                    }
-                case (2):
-                    if (isSecondLevel(password[i], PARAM)) {
-                        printf("%s\n", password[i]);
-                    }
-                case (3):
-                    if (isThirdLevel(password[i], PARAM)) {
-                        printf("%s\n", password[i]);
-                    }
-                case (4):
-                    if (isFourthLevel(password[i], PARAM)) {
-                        printf("%s\n", password[i]);
-                    }
+    while ((int) fgets(password[nstrings], 100, stdin)) {
+        if (LEVEL == 1) {
+            if (isFirstLevel(password[nstrings])) {
+                printf("%s", password[nstrings]);
             }
-            nstrings++;
-            sumoflengths += strLength(password[i]);
-            MIN = findMin(password[i], MIN);
         }
+        if (LEVEL == 2) {
+            if (isSecondLevel(password[nstrings], PARAM)) {
+                printf("%s", password[nstrings]);
+            }
+        }
+        if (LEVEL == 3) {
+            if (isThirdLevel(password[nstrings], PARAM)) {
+                printf("%s", password[nstrings]);
+            }
+        }
+        if (LEVEL == 4) {
+            if (isFourthLevel(password[nstrings], PARAM)) {
+                printf("%s", password[nstrings]);
+            }
+        }
+
+        sumoflengths += strLength(password[nstrings]);
+        MIN = findMin(password[nstrings], MIN);
+        nstrings++;
     }
     if (strCmp(stats, "--stats")) {
         printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %d", findNumChar(password), MIN, sumoflengths / nstrings);
     }
+    printf("%s", stats);
     return 0;
 }
