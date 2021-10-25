@@ -231,7 +231,7 @@ bool isThirdLevel(const char *string, int PARAM) {
     int seqlength = 1;
     if (isSecondLevel(string, PARAM)) {
         for (int i = 0 ; i < strLength(string); ++i) {
-            if (PARAM < seqlength) {
+            if (PARAM == seqlength) {
                 return false;
             }
             if (string[i] == string [i+1]){
@@ -334,9 +334,9 @@ int main(int argc, char* argv[]) {
             sumoflengths += strLength(password[i]);
             MIN = findMin(password[i], MIN);
         }
-        if (strCmp(stats, "--stats")) {
-            printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %d", findNumChar(password), MIN, sumoflengths / nstrings);
-        }
+    }
+    if (strCmp(stats, "--stats")) {
+        printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %d", findNumChar(password), MIN, sumoflengths / nstrings);
     }
     return 0;
 }
