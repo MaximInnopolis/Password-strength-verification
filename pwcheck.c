@@ -23,160 +23,29 @@ bool isLower(const char sym) {
     return false;
 }
 
-int strLength(const char *string) { // count number of element which is not full
+int strLength(const char *string) {
     int i = 0;
     while (string[i] != 0) i++;
-    return i - 1;               // with count of '\n' symbol
+    return i;
 }
 
 int isNum(char sym) {
-    if (sym <= 57 && sym >= 48) {
+    if (sym <= '9' && sym >= '0') {
         return true;
     }
     return false;
 }
 
-int strCmp(char string1[], char string2[] )
-{
-    for (int i = 0; ; i++)
-    {
-        if (string1[i] != string2[i])
-        {
+int strCmp(char string1[], char string2[]) {
+    for (int i = 0; ; i++) {
+        if (string1[i] != string2[i]) {
             return string1[i] < string2[i] ? -1 : 1;
         }
 
-        if (string1[i] == '\0')
-        {
+        if (string1[i] == '\0') {
             return 0;
         }
     }
-}
-
-int findNumChar(char a[120][100]){
-    int unique = 1;
-    for (int i = 0; i < 120; ++i) {
-        for (int j = 0; j < 100; ++j) {
-            if (a[i][j] == 0) break;
-            bool isUnique = true;
-            bool ended = false;
-
-            for (int z = i; z < 120; ++z) {
-                bool isBrake = false;
-
-                if (j == 0){
-                    for (int y = j; y < 100; ++y) {
-                        if ((i == z) && (j == y)){
-                            isUnique = isUnique && (a[i][j] != a[z][y]);
-                            continue;
-                        }
-                        if(a[z][y] == 0){
-                            break;
-                        }
-                        if (a[i][j] == a[z][y]) {
-                            isUnique = isUnique && (a[i][j] != a[z][y]);
-                            printf("Found equal char %c %d %d, %d %d\n", a[i][j], i, j, z, y);
-                            isBrake = true;
-                            break;
-                        }
-                        if ((y == strLength(a[y]) - 1) && (z == 119)) {
-                            isUnique = true;
-                            isBrake = true;
-                        }
-                    }
-                    if (isBrake){
-                        break;
-                    }
-                }
-
-                if ((j != 99) && (j != 0) && (ended == true)){
-                    for (int y = 0; y < 100; ++y) {
-                        if ((i == z) && (j == y)){
-                            isUnique = isUnique && (a[i][j] != a[z][y]);
-                            continue;
-                        }
-                        if(a[z][y] == 0){
-                            break;
-                        }
-                        if (a[i][j] == a[z][y]) {
-                            isUnique = isUnique && (a[i][j] != a[z][y]);
-                            printf("Found equal char %c %d %d, %d %d\n", a[i][j], i, j, z, y);
-                            isBrake = true;
-                            break;
-                        }
-                        if ((y == strLength(a[y]) - 1) && (z == 119)) {
-                            isUnique = true;
-                            isBrake = true;
-                        }
-                    }
-                    ended = false;
-                    if (isBrake){
-                        break;
-                    }
-                }
-
-                if ((j != 99) && (j != 0)){
-                    for (int y = 99 - j; y < 100; ++y) {
-                        if ((i == z) && (j == y)){
-                            isUnique = isUnique && (a[i][j] != a[z][y]);
-                            continue;
-                        }
-                        if(a[z][y] == 0){
-                            break;
-                        }
-                        if (a[i][j] == a[z][y]) {
-                            isUnique = isUnique && (a[i][j] != a[z][y]);
-                            printf("Found equal char %c %d %d, %d %d\n", a[i][j], i, j, z, y);
-                            isBrake = true;
-                            break;
-                        }
-                        if ((y == strLength(a[y]) - 1) && (z == 119)) {
-                            isUnique = true;
-                            isBrake = true;
-                        }
-                    }
-                    ended = true;
-                    if (isBrake){
-                        break;
-                    }
-                }
-
-                if ((j == 99) && (i != 119) && (z == i)){
-                    continue;
-                }
-
-                if ((j == 99) && (i != 119) && (z != i)) {
-                    for (int y = 0; y < 100; ++y) {
-                        if ((i == z) && (j == y)){
-                            isUnique = isUnique && (a[i][j] != a[z][y]);
-                            continue;
-                        }
-                        if(a[z][y] == 0){
-                            break;
-                        }
-                        if (a[i][j] == a[z][y]) {
-                            isUnique = isUnique && (a[i][j] != a[z][y]);
-                            printf("Found equal char %c %d %d, %d %d\n", a[i][j], i, j, z, y);
-                            isBrake = true;
-                            break;
-                        }
-                        if ((y == strLength(a[y]) - 1) && (z == 119)) {
-                            isUnique = true;
-                            isBrake = true;
-                        }
-                    }
-                    if (isBrake){
-                        break;
-                    }
-                }
-            }
-            if (isUnique){
-                ++unique;
-                printf("%c is unique\n", a[i][j]);
-            }
-        }
-    }
-    printf("Number of unique chars %d\n",unique);
-    return unique;
 }
 
 bool isFirstLevel(const char *string) {
@@ -232,7 +101,7 @@ bool isThirdLevel(const char *string, int PARAM) {
             if (PARAM == seqlength) {
                 return false;
             }
-            if (string[i] == string [i + 1]){
+            if (string[i] == string [i + 1]) {
                 seqlength++;
             }
         }
@@ -243,12 +112,13 @@ bool isThirdLevel(const char *string, int PARAM) {
 
 bool isFourthLevel(const char *string, int PARAM) {
 
+    const int localPARAM = PARAM + 1;
     int locallength = strLength(string) - PARAM;
-    char substringfirst[PARAM + 1];
-    char substringsecound[PARAM + 1];
+    char substringfirst[localPARAM];
+    char substringsecound[localPARAM];
 
     if (isThirdLevel(string, PARAM)) {
-        for (int i = 0 ; i < strLength(string); ++i){
+        for (int i = 0 ; i < strLength(string); ++i) {
             locallength--;
             if (locallength <= 0) {
                 break;
@@ -260,10 +130,7 @@ bool isFourthLevel(const char *string, int PARAM) {
                 for (int z = 0, j = PARAM + i; z < PARAM; ++j, z++){
                     substringsecound[j - PARAM - i] = string[j];
                 }
-//                printf("substringfirst : %s at i = %d\n",substringfirst,i);
-//                printf("substringsecound : %s at i = %d\n",substringsecound,i);
-
-                if (strCmp(substringfirst, substringsecound) == 0){
+                if (strCmp(substringfirst, substringsecound) == 0) {
                     return false;                }
             }
         }
@@ -293,47 +160,60 @@ int main(int argc, char* argv[]) {
         PARAM = atoi(argv[2]);
     }
     if (argc > 3 ) {
-        stats[0] = '-';
-        stats[1] = '-';
-        stats[2] = 's';
-        stats[3] = 't';
-        stats[4] = 'a';
-        stats[5] = 't';
-        stats[6] = 's';
+        char stats[7] = "--stats";
     }
 
-    char password[120][100];
+
+    char password[100];
     int MIN = 100;
-    int nstrings = 0, sumoflengths = 0;
+    int nstrings = 0, index = 0, sumoflengths = 0;
+    char c;
+    bool repeat[128] = {0};          //array which contains at unique indexes '0's and '1's
 
-    while ((int) fgets(password[nstrings], 100, stdin)) {
-        if (LEVEL == 1) {
-            if (isFirstLevel(password[nstrings])) {
-                printf("%s", password[nstrings]);
-            }
-        }
-        if (LEVEL == 2) {
-            if (isSecondLevel(password[nstrings], PARAM)) {
-                printf("%s", password[nstrings]);
-            }
-        }
-        if (LEVEL == 3) {
-            if (isThirdLevel(password[nstrings], PARAM)) {
-                printf("%s", password[nstrings]);
-            }
-        }
-        if (LEVEL == 4) {
-            if (isFourthLevel(password[nstrings], PARAM)) {
-                printf("%s", password[nstrings]);
-            }
-        }
+    while ((c = getchar()) != EOF) {
+        if (c != '\n') {
+            password[index] = c;        //Assigning array
+            index++;
 
-        sumoflengths += strLength(password[nstrings]);
-        MIN = findMin(password[nstrings], MIN);
-        nstrings++;
+            repeat[(int)c] = 1;         // Assign '1' at unique index
+        }
+        else {
+            password[index] = 0; // instead of '\n' there will be '\0'
+
+            if (LEVEL == 1) {
+                if (isFirstLevel(password)) {
+                    printf("%s\n", password);
+                }
+            }
+            if (LEVEL == 2) {
+                if (isSecondLevel(password, PARAM)) {
+                    printf("%s\n", password);
+                }
+            }
+            if (LEVEL == 3) {
+                if (isThirdLevel(password, PARAM)) {
+                    printf("%s\n", password);
+                }
+            }
+            if (LEVEL == 4) {
+                if (isFourthLevel(password, PARAM)) {
+                    printf("%s\n", password);
+                }
+            }
+
+            sumoflengths += strLength(password);
+            MIN = findMin(password, MIN);
+            nstrings++;
+            index = 0;
+        }
     }
-    if (strCmp(stats, "--stats")) {
-        printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %d", findNumChar(password), MIN, sumoflengths / nstrings);
+
+    int unique = 0;
+    for (int i = 0; i < 100; i++)
+        unique += repeat[i];
+
+    if (strCmp(stats, "--stats") && argc > 3) {
+        printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %f", unique, MIN, (float)sumoflengths / nstrings);
     }
     return 0;
 }
