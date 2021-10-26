@@ -36,8 +36,8 @@ int isNum(char sym) {
     return false;
 }
 
-int strCmp(char string1[], char string2[]) {
-    for (int i = 0; ; i++) {
+int strCmp(char string1[], char string2[]) {        //compares 2 strings
+    for (int i = 0; ; ++i) {
         if (string1[i] != string2[i]) {
             return string1[i] < string2[i] ? -1 : 1;
         }
@@ -114,6 +114,7 @@ bool isFourthLevel(const char *string, int PARAM) {
 
     const int localPARAM = PARAM + 1;
     int locallength = strLength(string) - PARAM;
+
     char substringfirst[localPARAM];
     char substringsecound[localPARAM];
 
@@ -131,7 +132,8 @@ bool isFourthLevel(const char *string, int PARAM) {
                     substringsecound[j - PARAM - i] = string[j];
                 }
                 if (strCmp(substringfirst, substringsecound) == 0) {
-                    return false;                }
+                    return false;
+                }
             }
         }
         return true;
@@ -163,12 +165,11 @@ int main(int argc, char* argv[]) {
         char stats[7] = "--stats";
     }
 
-
     char password[100];
     int MIN = 100;
     int nstrings = 0, index = 0, sumoflengths = 0;
     char c;
-    bool repeat[128] = {0};          //array which contains at unique indexes '0's and '1's
+    bool repeat[128] = {0};             //array which contains '0's and '1's at unique indexes
 
     while ((c = getchar()) != EOF) {
         if (c != '\n') {
@@ -178,7 +179,7 @@ int main(int argc, char* argv[]) {
             repeat[(int)c] = 1;         // Assign '1' at unique index
         }
         else {
-            password[index] = 0; // instead of '\n' there will be '\0'
+            password[index] = 0;        // instead of '\n' there will be '\0' in array
 
             if (LEVEL == 1) {
                 if (isFirstLevel(password)) {
@@ -209,7 +210,7 @@ int main(int argc, char* argv[]) {
     }
 
     int unique = 0;
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 128; i++)           //Count unique symbols
         unique += repeat[i];
 
     if (strCmp(stats, "--stats") && argc > 3) {
