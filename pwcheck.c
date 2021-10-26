@@ -36,7 +36,7 @@ int isNumber(char sym) {
     return false;
 }
 
-int strCmp(char string1[], char string2[]) {        //compares 2 strings
+int strCmp(char string1[], char string2[]) {        // Compares 2 strings
     for (int i = 0; ; ++i) {
         if (string1[i] != string2[i]) {
             return string1[i] < string2[i] ? -1 : 1;
@@ -169,17 +169,17 @@ int main(int argc, char* argv[]) {
     int MIN = 100;
     int nstrings = 0, index = 0, sumoflengths = 0;
     char c;
-    bool repeat[128] = {0};             //array which contains '0's and '1's at unique indexes  (128 elements in ASCII table)
+    bool repeat[128] = {0};             // Array which contains '0's and '1's at unique indexes  (128 elements in ASCII table)
 
     while ((c = getchar()) != EOF) {
         if (c != '\n') {
-            password[index] = c;        //Assigning array
+            password[index] = c;        // Assigning array
             index++;
 
             repeat[(int)c] = 1;         // Assign '1' at unique index
         }
         else {
-            password[index] = 0;        // instead of '\n' there will be '\0' in array
+            password[index] = 0;        // Instead of '\n' there will be '\0' in array
 
             if (LEVEL == 1) {
                 if (isFirstLevel(password)) {
@@ -210,7 +210,7 @@ int main(int argc, char* argv[]) {
     }
 
     int unique = 0;
-    for (int i = 0; i < 128; i++)           //Count unique symbols
+    for (int i = 0; i < 128; i++)           // Count unique symbols
         unique += repeat[i];
 
     if (strCmp(stats, "--stats") && argc > 3) {
