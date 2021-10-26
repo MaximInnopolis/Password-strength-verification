@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-bool isSpecialSym(const char sym) {
+bool isSpecialSymbol(const char sym) {
     if ((sym <= 47 && sym >= 33) || (sym <= 64 && sym >= 58) || (sym <= 96 && sym >= 91) || (sym <= 126 && sym >= 123)) {
         return true;
     }
@@ -29,7 +29,7 @@ int strLength(const char *string) {
     return i;
 }
 
-int isNum(char sym) {
+int isNumber(char sym) {
     if (sym <= '9' && sym >= '0') {
         return true;
     }
@@ -80,10 +80,10 @@ bool isSecondLevel(const char *string, int PARAM) {
             if (isLower(string[i])) {
                 lower += 1;
             }
-            if (isNum(string[i])) {
+            if (isNumber(string[i])) {
                 num += 1;
             }
-            if (isSpecialSym(string[i])) {
+            if (isSpecialSymbol(string[i])) {
                 spec += 1;
             }
             if (PARAM <= (int)upper + (int)lower + (int)num + (int)spec) {
@@ -169,7 +169,7 @@ int main(int argc, char* argv[]) {
     int MIN = 100;
     int nstrings = 0, index = 0, sumoflengths = 0;
     char c;
-    bool repeat[128] = {0};             //array which contains '0's and '1's at unique indexes
+    bool repeat[128] = {0};             //array which contains '0's and '1's at unique indexes  (128 elements in ASCII table)
 
     while ((c = getchar()) != EOF) {
         if (c != '\n') {
