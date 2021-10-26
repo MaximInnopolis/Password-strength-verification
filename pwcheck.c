@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 bool isSpecialSymbol(const char sym) {
-    if ((sym <= 47 && sym >= 33) || (sym <= 64 && sym >= 58) || (sym <= 96 && sym >= 91) || (sym <= 126 && sym >= 123)) {
+    if ((sym <= 47 && sym >= 32) || (sym <= 64 && sym >= 58) || (sym <= 96 && sym >= 91) || (sym <= 126 && sym >= 123)) {
         return true;
     }
     return false;
@@ -25,7 +25,7 @@ bool isLower(const char sym) {
 
 int strLength(const char *string) {
     int i = 0;
-    while (string[i] != 0) i++;
+    while (string[i]) i++;
     return i;
 }
 
@@ -36,7 +36,7 @@ int isNumber(char sym) {
     return false;
 }
 
-int strCmp(char string1[], char string2[]) {        // Compares 2 strings
+int strCmp(char string1[], char string2[]) {        //compares 2 strings
     for (int i = 0; ; ++i) {
         if (string1[i] != string2[i]) {
             return string1[i] < string2[i] ? -1 : 1;
@@ -152,9 +152,6 @@ int main(int argc, char* argv[]) {
     int LEVEL, PARAM;
     char stats[7];
 
-    for (int i = 0; i < argc; ++i) {
-        printf("argv[%d] = %s\n", i, argv[i]);
-    }
     if (argc > 1) {
         LEVEL = atoi(argv[1]);
     }
@@ -169,17 +166,17 @@ int main(int argc, char* argv[]) {
     int MIN = 100;
     int nstrings = 0, index = 0, sumoflengths = 0;
     char c;
-    bool repeat[128] = {0};             // Array which contains '0's and '1's at unique indexes  (128 elements in ASCII table)
+    bool repeat[128] = {0};             //array which contains '0's and '1's at unique indexes  (128 elements in ASCII table)
 
     while ((c = getchar()) != EOF) {
         if (c != '\n') {
-            password[index] = c;        // Assigning array
+            password[index] = c;        //Assigning array
             index++;
 
             repeat[(int)c] = 1;         // Assign '1' at unique index
         }
         else {
-            password[index] = 0;        // Instead of '\n' there will be '\0' in array
+            password[index] = 0;        // instead of '\n' there will be '\0' in array
 
             if (LEVEL == 1) {
                 if (isFirstLevel(password)) {
@@ -210,11 +207,11 @@ int main(int argc, char* argv[]) {
     }
 
     int unique = 0;
-    for (int i = 0; i < 128; i++)           // Count unique symbols
+    for (int i = 0; i < 128; ++i)           //Count unique symbols
         unique += repeat[i];
 
     if (strCmp(stats, "--stats") && argc > 3) {
-        printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %f", unique, MIN, (float)sumoflengths / nstrings);
+        printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %.1f", unique, MIN, (float)sumoflengths / nstrings);
     }
     return 0;
 }
