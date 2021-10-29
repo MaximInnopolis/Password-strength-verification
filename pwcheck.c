@@ -36,7 +36,7 @@ int isNumber(char sym) {
     return false;
 }
 
-int strCmp(char string1[], char string2[]) {        //compares 2 strings
+int strCmp(char string1[], char string2[]) {        // Compares 2 strings
     for (int i = 0; ; ++i) {
         if (string1[i] != string2[i]) {
             return string1[i] < string2[i] ? -1 : 1;
@@ -148,9 +148,32 @@ int findMin(const char *string, int MIN ){
     return MIN;
 }
 
+void checkLevel(const char *password, int LEVEL, int PARAM){
+    if (LEVEL == 1) {
+        if (isFirstLevel(password)) {
+            printf("%s\n", password);
+        }
+    }
+    if (LEVEL == 2) {
+        if (isSecondLevel(password, PARAM)) {
+            printf("%s\n", password);
+        }
+    }
+    if (LEVEL == 3) {
+        if (isThirdLevel(password, PARAM)) {
+            printf("%s\n", password);
+        }
+    }
+    if (LEVEL == 4) {
+        if (isFourthLevel(password, PARAM)) {
+            printf("%s\n", password);
+        }
+    }
+}
+
 int main(int argc, char* argv[]) {
     int LEVEL, PARAM;
-    char stats[7];
+    const char stats[7] = {"--stats"};
 
     if (argc > 1) {
         LEVEL = atoi(argv[1]);
@@ -158,46 +181,23 @@ int main(int argc, char* argv[]) {
     if (argc > 2) {
         PARAM = atoi(argv[2]);
     }
-    if (argc > 3 ) {
-        char stats[7] = "--stats";
-    }
 
     char password[100];
     int MIN = 100;
     int nstrings = 0, index = 0, sumoflengths = 0;
     char c;
-    bool repeat[128] = {0};             //array which contains '0's and '1's at unique indexes  (128 elements in ASCII table)
+    bool repeat[128] = {0};             // Array which contains '0's and '1's at unique indexes  (128 elements in ASCII table)
 
     while ((c = getchar()) != EOF) {
         if (c != '\n') {
-            password[index] = c;        //Assigning array
+            password[index] = c;        // Assigning array
             index++;
 
-            repeat[(int)c] = 1;         // Assign '1' at unique index
-        }
-        else {
-            password[index] = 0;        // instead of '\n' there will be '\0' in array
+            repeat[(int) c] = 1;         // Assign '1' at unique index
+        } else {
+            password[index] = 0;        // Instead of '\n' there will be '\0' in array
 
-            if (LEVEL == 1) {
-                if (isFirstLevel(password)) {
-                    printf("%s\n", password);
-                }
-            }
-            if (LEVEL == 2) {
-                if (isSecondLevel(password, PARAM)) {
-                    printf("%s\n", password);
-                }
-            }
-            if (LEVEL == 3) {
-                if (isThirdLevel(password, PARAM)) {
-                    printf("%s\n", password);
-                }
-            }
-            if (LEVEL == 4) {
-                if (isFourthLevel(password, PARAM)) {
-                    printf("%s\n", password);
-                }
-            }
+            checkLevel(password, LEVEL, PARAM);     // Checks LEVEL and PARAM and print password if it passes this checks
 
             sumoflengths += strLength(password);
             MIN = findMin(password, MIN);
@@ -207,11 +207,14 @@ int main(int argc, char* argv[]) {
     }
 
     int unique = 0;
-    for (int i = 0; i < 128; ++i)           //Count unique symbols
+    for (int i = 0; i < 128; ++i)           // Count unique symbols
         unique += repeat[i];
 
-    if (strCmp(stats, "--stats") && argc > 3) {
-        printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %.1f", unique, MIN, (float)sumoflengths / nstrings);
+    if (argc > 3) {
+        if (strCmp(argv[3], stats)) {
+            printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %.1f", unique, MIN, (float) sumoflengths / nstrings);
+        }
     }
+
     return 0;
 }
