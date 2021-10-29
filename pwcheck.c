@@ -182,37 +182,43 @@ int main(int argc, char* argv[]) {
         PARAM = atoi(argv[2]);
     }
 
-    char password[100];
-    int MIN = 100;
-    int nstrings = 0, index = 0, sumoflengths = 0;
-    char c;
-    bool repeat[128] = {0};             // Array which contains '0's and '1's at unique indexes  (128 elements in ASCII table)
+    if (argc < 5) {
 
-    while ((c = getchar()) != EOF) {
-        if (c != '\n') {
-            password[index] = c;        // Assigning array
-            index++;
+        char password[100];
+        int MIN = 100;
+        int nstrings = 0, index = 0, sumoflengths = 0;
+        char c;
+        bool repeat[128] = {
+                0};             // Array which contains '0's and '1's at unique indexes  (128 elements in ASCII table)
 
-            repeat[(int) c] = 1;         // Assign '1' at unique index
-        } else {
-            password[index] = 0;        // Instead of '\n' there will be '\0' in array
+        while ((c = getchar()) != EOF) {
+            if (c != '\n') {
+                password[index] = c;        // Assigning array
+                index++;
 
-            checkLevel(password, LEVEL, PARAM);     // Checks LEVEL and PARAM and print password if it passes this checks
+                repeat[(int) c] = 1;         // Assign '1' at unique index
+            } else {
+                password[index] = 0;        // Instead of '\n' there will be '\0' in array
 
-            sumoflengths += strLength(password);
-            MIN = findMin(password, MIN);
-            nstrings++;
-            index = 0;
+                checkLevel(password, LEVEL,
+                           PARAM);     // Checks LEVEL and PARAM and print password if it passes this checks
+
+                sumoflengths += strLength(password);
+                MIN = findMin(password, MIN);
+                nstrings++;
+                index = 0;
+            }
         }
-    }
 
-    int unique = 0;
-    for (int i = 0; i < 128; ++i)           // Count unique symbols
-        unique += repeat[i];
+        int unique = 0;
+        for (int i = 0; i < 128; ++i)           // Count unique symbols
+            unique += repeat[i];
 
-    if (argc > 3) {
-        if (strCmp(argv[3], stats)) {
-            printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %.1f", unique, MIN, (float) sumoflengths / nstrings);
+        if (argc > 3) {
+            if (strCmp(argv[3], stats)) {
+                printf("Statistika:\nRuznych znaku: %d\nMinimalni delka: %d\nPrumerna delka: %.1f", unique, MIN,
+                       (float) sumoflengths / nstrings);
+            }
         }
     }
 
